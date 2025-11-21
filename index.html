@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoriTalks – Encuesta de Satisfacción</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { background:#0f172a; color:#e2e8f0; font-family:'Inter',sans-serif; }
+        .form-container-card { background:rgba(30,41,59,.7); backdrop-filter:blur(12px); border:1px solid rgba(71,85,105,.5); }
+        .form-step.hidden { opacity:0; position:absolute; pointer-events:none; transform:translateY(10px); }
+        #progress-bar-fill { background:#38bdf8; transition:width .4s; }
+        .dark-input { background:#0f172a; border-color:#475569; color:#f1f5f9; }
+        .dark-input:focus { border-color:#38bdf8; box-shadow:0 0 0 2px rgba(56,189,248,.4); outline:none; }
+        .btn-primary { background:#0284c7; color:white; }
+        .btn-primary:hover { background:#0ea5e9; transform:translateY(-2px); }
+        .emoji { transition:transform .2s cubic-bezier(.34,1.56,.64,1); }
+        .form-radio-input:checked + .form-radio-control { border-color:#38bdf8; box-shadow:0 0 0 2px #38bdf8; }
+        .form-radio-input:checked + .form-radio-control .emoji { transform:scale(1.25); }
+        @keyframes shake { 10%,90%{transform:translate(-1px);} 20%,80%{transform:translate(2px);} 30%,50%,70%{transform:translate(-4px);} 40%,60%{transform:translate(4px);} }
+        .animate-shake { animation:shake .6s; }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-center">
+
+    <div class="container mx-auto max-w-2xl px-4 py-8">
+
+        <div class="form-container-card rounded-2xl shadow-xl overflow-hidden">
+            <div class="w-full h-2 bg-slate-700">
+                <div id="progress-bar-fill" class="h-2" style="width:0%"></div>
+            </div>
+
+            <div id="form-container" class="p-8">
+                <h1 class="text-4xl font-black text-center mb-4">CoriTalks <span class="text-sky-400">Edición 5</span></h1>
+                <p class="text-center text-xl text-slate-400 mb-10">Kinergia</p>
+
+                <form id="satisfaction-form" name="submit-to-google-sheet" target="hidden_iframe">
+
+                    <input type="hidden" name="Speaker" value="Juan Guillermo Brand">
+
+                    <div class="relative min-h-[300px]">
+
+                        <!-- Paso 0 -->
+                        <div class="form-step" data-step="0">
+                            <div class="text-center py-8 space-y-6">
+                                <h2 class="text-3xl font-bold">¡Tu opinión nos impulsa!</h2>
+                                <p class="text-xl text-slate-300">
+                                    Gracias por acompañarnos en esta charla: <span class="font-bold text-sky-400">Kinergia</span>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Paso 1 -->
+                        <div class="form-step hidden" data-step="1">
+                            <h3 class="text-2xl font-bold mb-8 text-center">¿Cómo calificas la charla?</h3>
+                            <div class="grid grid-cols-5 gap-4">
+                                <label class="group">
+                                    <input type="radio" name="CalificacionGeneral" value="1_MuyMalo" class="sr-only form-radio-input" required>
+                                    <div class="form-radio-control p-4 border rounded-xl bg-slate-800/50 border-slate-600 hover:border-sky-400 text-center">
+                                        <span class="emoji text-4xl">😠</span>
+                                        <span class="block text-sm mt-1">Mal</span>
+                                    </div>
+                                </label>
+                                <label class="group">
+                                    <input type="radio" name="CalificacionGeneral" value="2_Malo" class="sr-only form-radio-input">
+                                    <div class="form-radio-control p-4 border rounded-xl bg-slate-800/50 border-slate-600 hover:border-sky-400 text-center">
+                                        <span class="emoji text-4xl">🙁</span>
+                                        <span class="block text-sm mt-1">Regular</span>
+                                    </div>
+                                </label>
+                                <label class="group">
+                                    <input type="radio" name="CalificacionGeneral" value="3_Regular" class="sr-only form-radio-input">
+                                    <div class="form-radio-control p-4 border rounded-xl bg-slate-800/50 border-slate-600 hover:border-sky-400 text-center">
+                                        <span class="emoji text-4xl">😐</span>
+                                        <span class="block text-sm mt-1">Bien</span>
+                                    </div>
+                                </label>
+                                <label class="group">
+                                    <input type="radio" name="CalificacionGeneral" value="4_Bueno" class="sr-only form-radio-input">
+                                    <div class="form-radio-control p-4 border rounded-xl bg-slate-800/50 border-slate-600 hover:border-sky-400 text-center">
+                                        <span class="emoji text-4xl">🙂</span>
+                                        <span class="block text-sm mt-1">Muy Bien</span>
+                                    </div>
+                                </label>
+                                <label class="group">
+                                    <input type="radio" name="CalificacionGeneral" value="5_Excelente" class="sr-only form-radio-input">
+                                    <div class="form-radio-control p-4 border rounded-xl bg-slate-800/50 border-slate-600 hover:border-sky-400 text-center">
+                                        <span class="emoji text-4xl">🤩</span>
+                                        <span class="block text-sm mt-1">Excelente</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Paso 2 -->
+                        <div class="form-step hidden" data-step="2">
+                            <h3 class="text-2xl font-bold mb-8 text-center">Claridad y Contenido</h3>
+
+                            <label class="block mb-2 text-sky-300">¿El contenido fue relevante?</label>
+                            <select name="ContenidoRelevante" class="dark-input w-full p-4 rounded-xl mb-8" required>
+                                <option disabled selected>Selecciona...</option>
+                                <option value="5_TotalmenteDeAcuerdo">Totalmente de acuerdo</option>
+                                <option value="4_DeAcuerdo">De acuerdo</option>
+                                <option value="3_Neutral">Neutral</option>
+                                <option value="2_EnDesacuerdo">En desacuerdo</option>
+                                <option value="1_TotalmenteEnDesacuerdo">Totalmente en desacuerdo</option>
+                            </select>
+
+                            <label class="block mb-2 text-sky-300">Habilidad de comunicación del speaker</label>
+                            <select name="HabilidadComunicacion" class="dark-input w-full p-4 rounded-xl" required>
+                                <option disabled selected>Selecciona...</option>
+                                <option value="5_Excelente">Excelente</option>
+                                <option value="4_Buena">Buena</option>
+                                <option value="3_Regular">Regular</option>
+                                <option value="2_Deficiente">Deficiente</option>
+                                <option value="1_MuyDeficiente">Muy deficiente</option>
+                            </select>
+                        </div>
+
+                        <!-- Paso 3 -->
+                        <div class="form-step hidden" data-step="3">
+                            <h3 class="text-2xl font-bold mb-8 text-center">El Escenario</h3>
+
+                            <label class="block mb-2 text-sky-300">¿Qué tal el lugar?</label>
+                            <select name="CalificacionLugar" class="dark-input w-full p-4 rounded-xl mb-8" required>
+                                <option disabled selected>Selecciona...</option>
+                                <option value="5_Excelente">Excelente</option>
+                                <option value="4_Bueno">Bueno</option>
+                                <option value="3_Regular">Regular</option>
+                                <option value="2_Malo">Malo</option>
+                                <option value="1_MuyMalo">Muy malo</option>
+                            </select>
+
+                            <label class="block mb-2 text-sky-300">¿Fecha y hora convenientes?</label>
+                            <select name="FechaHoraConveniente" class="dark-input w-full p-4 rounded-xl" required>
+                                <option disabled selected>Selecciona...</option>
+                                <option value="5_TotalmenteDeAcuerdo">Perfectas</option>
+                                <option value="4_DeAcuerdo">Convenientes</option>
+                                <option value="3_Neutral">Neutral</option>
+                                <option value="2_EnDesacuerdo">Poco convenientes</option>
+                                <option value="1_TotalmenteEnDesacuerdo">Nada convenientes</option>
+                            </select>
+                        </div>
+
+                        <!-- Paso 4 -->
+                        <div class="form-step hidden" data-step="4">
+                            <h3 class="text-2xl font-bold mb-8 text-center">Tu opinión abierta</h3>
+                            <textarea name="ComentarioMejora" rows="4" class="dark-input w-full p-4 rounded-xl" placeholder="Escribe aquí..."></textarea>
+                        </div>
+
+                        <!-- Paso 5 -->
+                        <div class="form-step hidden" data-step="5">
+                            <h3 class="text-2xl font-bold mb-8 text-center">Mantengamos contacto</h3>
+
+                            <label class="block mb-2 text-sky-300">¿Deseas recibir información?</label>
+
+                            <div class="flex gap-6 mb-6">
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="InfoFuturosEventos" value="Si" required>
+                                    <span>Sí</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="InfoFuturosEventos" value="No">
+                                    <span>No</span>
+                                </label>
+                            </div>
+
+                            <label class="block mb-2 text-sky-300">Correo electrónico (opcional)</label>
+                            <input type="email" name="Email" class="dark-input w-full p-4 rounded-xl" placeholder="correo@ejemplo.com">
+                        </div>
+
+                        <!-- Paso 6 -->
+                        <div class="form-step hidden" data-step="6">
+                            <h3 class="text-2xl font-bold mb-8 text-center">¿Cómo te enteraste?</h3>
+                            <select name="CanalComunicacion" class="dark-input w-full p-4 rounded-xl" required>
+                                <option disabled selected>Selecciona...</option>
+                                <option value="CorreoInstitucional">Correo institucional</option>
+                                <option value="Pithcori">Pithcori</option>
+                                <option value="Whatsapp">Whatsapp</option>
+                                <option value="VozAVoz">Voz a voz</option>
+                                <option value="Multicanal">Multicanal</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-10 pt-8 border-t border-slate-600 flex justify-between">
+                        <button type="button" id="prev-btn" class="text-slate-400 font-bold py-3 px-6 rounded-xl hidden">
+                            Anterior
+                        </button>
+
+                        <button type="button" id="next-btn" class="btn-primary font-bold py-3 px-10 rounded-full">
+                            Siguiente
+                        </button>
+
+                        <button type="submit" id="submit-btn" class="btn-primary font-bold py-3 px-10 rounded-full hidden">
+                            Enviar
+                        </button>
+                    </div>
+
+                    <p id="loading-message" class="hidden mt-6 text-center text-sky-300 animate-pulse">
+                        Enviando tus respuestas...
+                    </p>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- GRACIAS -->
+        <div id="thank-you-message" class="hidden text-center p-10 pt-20">
+            <div class="text-7xl mb-6">🙌</div>
+            <h2 class="text-4xl font-black mb-4">¡Gracias por tu Feedback!</h2>
+            <p class="text-xl text-slate-300 max-w-md mx-auto">
+                Tus respuestas nos ayudan a seguir mejorando CoriTalks.
+            </p>
+        </div>
+    </div>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+(() => {
+
+    const scriptURL =
+        "https://script.google.com/macros/s/AKfycbzsRltfA0WDWv5WxB4ICDahBU3YS_2lfiVL1kpKisaQUiGZFd5uh1ifqgpD5oNi2r_b/exec";
+
+    const form = document.forms["submit-to-google-sheet"];
+    const formContainer = document.getElementById("form-container");
+    const thankYouMessage = document.getElementById("thank-you-message");
+    const loadingMessage = document.getElementById("loading-message");
+    const hiddenIframe = document.getElementById("hidden_iframe");
+
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-btn");
+
+    const steps = Array.from(document.querySelectorAll(".form-step"));
+    const totalSteps = steps.length - 1;
+    const progressFill = document.getElementById("progress-bar-fill");
+
+    let currentStep = 0;
+
+    function updateFormView() {
+        steps.forEach(s => s.classList.add("hidden"));
+        steps[currentStep].classList.remove("hidden");
+
+        progressFill.style.width = (currentStep / totalSteps) * 100 + "%";
+
+        prevBtn.classList.toggle("hidden", currentStep === 0);
+        nextBtn.classList.toggle("hidden", currentStep === totalSteps);
+        submitBtn.classList.toggle("hidden", currentStep !== totalSteps);
+    }
+
+    function validateStep(stepIndex) {
+        const required = steps[stepIndex].querySelectorAll("[required]");
+        for (let input of required) {
+            if (input.type === "radio") {
+                const group = [...document.getElementsByName(input.name)];
+                if (!group.some(r => r.checked)) return false;
+            } else if (!input.value.trim()) return false;
+        }
+        return true;
+    }
+
+    nextBtn.addEventListener("click", () => {
+        if (!validateStep(currentStep)) {
+            steps[currentStep].classList.add("animate-shake");
+            setTimeout(() => steps[currentStep].classList.remove("animate-shake"), 500);
+            return;
+        }
+        currentStep++;
+        updateFormView();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        currentStep--;
+        updateFormView();
+    });
+
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        loadingMessage.classList.remove("hidden");
+
+        form.action = scriptURL;
+        form.submit();
+    });
+
+    hiddenIframe.addEventListener("load", () => {
+        loadingMessage.classList.add("hidden");
+        formContainer.parentElement.innerHTML = thankYouMessage.innerHTML;
+    });
+
+    updateFormView();
+
+})();
+</script>
+
+</body>
+</html>
